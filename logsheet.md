@@ -61,6 +61,28 @@
 
 
 
+### 20-21 Jan 2021 
+
+* `developerInternalID` was not used as it has too many unique values
+
+* Decided to use 0 to replace NaNs for year and price instead of mean but can change later to see which performs better
+
+* Game `genre` was dummy encoded as well
+
+* Tried out LDA and TF-IDF. LDA gave topics that are not distinct and therefore is not used. TF-IDF was able to give distinct important words to act as features for the games, but only when `min_df` was increased
+
+* Because `summary` features were weighted using TF-IDF, they are in the range of 0-1, while features like `editorsChoice` are boolean, so the latter might have a higher weightage then the other features, causing it to account for higher similarities, and thus more recommendations according to it
+
+  <u>**Things to note**</u>
+
+* Might want to consider removing `editorsChoice` as that can have its own recommendation section
+
+* Might want to include `content ratings` into the `summary` to TF-IDF as well so that they don't take up higher weightage, or just TF-IDF itself
+
+* Able to get TF-IDF weights for new examples using the fitted model but need to think of the best way to compute similar items as right now the similarity matrix is pre-computed and based on current available data
+
+
+
 ## TO DO
 
 - [x] Download 2k reviews from each game?
@@ -68,9 +90,9 @@
 
 * Content-based filtering
   - [x] extract out words from game summary that are in corpus to use as features
-  - [ ] extract content ratings, genre, release date to use as features
-  - [ ] `price`, `minInstalls`, `containsAds`, `editorsChoice`, `developerInternalID` can also be used as features
-  - [ ] remove games with very low `minInstalls`? Probably need to do this with some other feature like `year`. If `minInstalls` is still low after released for a year or more, then should probably not recommend it
+  - [x] extract content ratings, genre, release date to use as features
+  - [x] `price`, `minInstalls`, `containsAds`, `editorsChoice` can also be used as features
+  - [x] remove games with very low `minInstalls`? Probably need to do this with some other feature like `year`. If `minInstalls` is still low after released for a year or more, then should probably not recommend it
   - [ ] reset userID after filtering; if not userID can be quite long
 * Collaborative filtering
 * Deploy model on Streamlit
