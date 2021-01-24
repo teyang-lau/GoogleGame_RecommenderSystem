@@ -8,7 +8,7 @@
 
 - used `google-play-scraper` Node.js to scrape google games id and info from google play store into text files. **Script: `get_ggames.js` **
 
-  - ~ 200 for each `category`,`collection` (e.g., New Free Adventure games, New Paid Action games)
+  - 200 for each `category`,`collection` (e.g., New Free Adventure games, New Paid Action games)
 
 - this is needed because the package to scrape reviews require the `appID`
 
@@ -83,6 +83,24 @@
 
 
 
+### 23-24 Jan 2021 
+
+* extracted game long `description` as well using  **`scrape_game_details.ipynb`** as it should help with better **topic modelling**
+
+* included more text preprocessing functions for processing game descriptions such as removing emails, urls, links, escape sequences
+
+* added decontraction function to expand common contractions from text
+
+* went back to using LDA for feature engineering as using `description` has more words than `summary` for topic modelling
+
+  <u>**Things to note**</u>
+
+* Note sure if including TF-IDF features on top of LDA will improve game similarities?
+
+* How about incorporating game name and developer name into cosine similarity calculation?
+
+
+
 ## TO DO
 
 - [x] Download 2k reviews from each game?
@@ -93,7 +111,13 @@
   - [x] extract content ratings, genre, release date to use as features
   - [x] `price`, `minInstalls`, `containsAds`, `editorsChoice` can also be used as features
   - [x] remove games with very low `minInstalls`? Probably need to do this with some other feature like `year`. If `minInstalls` is still low after released for a year or more, then should probably not recommend it
-  - [ ] reset userID after filtering; if not userID can be quite long
+  - [ ] find a way to incorporate game name and developer name similarity into cosine similarity 
+  - [ ] add game name to description 
+  - [ ] include both LDA and TF-IDF features
+  - [ ] tweak other feature weightings to get best similarities
+  - [ ] create user profile based on the average of the features of games they reviewed
+  - [ ] train-test split user profile for content-based filtering model evaluation
 * Collaborative filtering
+  * [ ] reset userID after filtering; if not userID can be quite long
 * Deploy model on Streamlit
   - [ ] For children recommendations
