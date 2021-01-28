@@ -101,6 +101,23 @@
 
 
 
+### 26-28 Jan 2021  
+
+* finalized LDA and TF-IDF for game features and created separate `game_features` dataframe for each
+* created function to print game `icons` when recommending similar games
+* created `ContentBasedRecommender` class for training model, but it does not do train-val evaluation
+* created `evaluate_CB_recommender` function to do kfold cross-val: 
+  * for each user in train, split using kfold, create user profile for each fold and recommend 100 games 
+  * for each kfold val, check if it is in the 100 recommendations; if is, then it is a hit
+
+<u>**Things to note**</u>
+
+* `evaluate_CB_recommender` takes very long to run. ~70min for whole train data
+* might try to not use kfold corss-val; a normal train val stratified split by `userID` might be able to use vectorization
+* this method of evaluating means that as `num_recommendations` increases, precision increases. What number to choose? 
+
+
+
 ## TO DO
 
 - [x] Download 2k reviews from each game?
@@ -112,12 +129,11 @@
   - [x] `price`, `minInstalls`, `containsAds`, `editorsChoice` can also be used as features
   - [x] remove games with very low `minInstalls`? Probably need to do this with some other feature like `year`. If `minInstalls` is still low after released for a year or more, then should probably not recommend it
   - [ ] find a way to incorporate game name and developer name similarity into cosine similarity 
-  - [ ] add game name to description 
-  - [ ] include both LDA and TF-IDF features
   - [ ] tweak other feature weightings to get best similarities
-  - [ ] create user profile based on the average of the features of games they reviewed
-  - [ ] train-test split user profile for content-based filtering model evaluation
+  - [ ] reduce time complexity of evaluate function
+  - [x] create user profile based on the average of the features of games they reviewed
+  - [x] train-test split user profile for content-based filtering model evaluation
 * Collaborative filtering
-  * [ ] reset userID after filtering; if not userID can be quite long
+  * [x] reset userID after filtering; if not userID can be quite long
 * Deploy model on Streamlit
   - [ ] For children recommendations
