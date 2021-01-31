@@ -51,7 +51,7 @@ Building a personalized recommendation system thus requires lots of data, which 
 
 ## **About this Dataset** 
 
-There are thousand of games on the Google Play Store. Using the Node.js [`google-play-scraper`](https://github.com/facundoolano/google-play-scraper) package, 200 games' `app IDs` from each category and collection in the store were obtained. Detailed game information and game reviews were scraped using Python [`google-play-scraper`](https://github.com/JoMingyu/google-play-scraper) package. A maximum of 2000 reviews were collected from each game, and stored in JSON format. Detailed game information contains game features like the long game description, its summary, price, released year, genre, content rating, url etc. while each review contains the username, review text, and review score on a scale of 1-5. In total, there were ~7600 games and ~8 million game reviews before cleaning and filtering.
+There are thousand of games on the Google Play Store. Using the Node.js [`google-play-scraper`](https://github.com/facundoolano/google-play-scraper) package, 200 games' `app IDs` from each category and collection in the store were obtained. Detailed game information and game reviews were scraped using Python [`google-play-scraper`](https://github.com/JoMingyu/google-play-scraper) package. A maximum of 2000 reviews were collected from each game, and stored in JSON format. Detailed game information contains game features like the long game description, its summary, price, released year, genre, content rating, url etc. while each review contains the username, review text, and review score on a scale of 1-5. In total, there were **~7600 games** and **~8 million game reviews** before cleaning and filtering.
 
 
 
