@@ -1,5 +1,3 @@
-
-
 # Logsheet for Google Games Recommendation System
 
 
@@ -113,8 +111,35 @@
 <u>**Things to note**</u>
 
 * `evaluate_CB_recommender` takes very long to run. ~70min for whole train data
+
 * might try to not use kfold corss-val; a normal train val stratified split by `userID` might be able to use vectorization
+
 * this method of evaluating means that as `num_recommendations` increases, precision increases. What number to choose? 
+
+* con: treats each hit as the same, regardless of how the user rates the hit
+
+  
+
+### 29-30 Jan 2021  
+
+* split into train, val and test for each user, get `userprofile` with train and evaluate on validation
+* 2 methods, a nonweighted and weighted to adjust the influence of `ratings` on `userprofile`
+* allow parameter setting for `sim_thres` and `num_rec`
+* for `sim_thres` values below this will be given a -1 index, meaning that they will not be recommended. So `num_rec` will be adjusted from 0:`num_rec` depending on `sim_thres`
+* get relevant items based on scores of  game ratings. <=2 means not relevant
+* if there are recommendations, each relevant validation game that is inside recommendation will get a `hit`
+* computed **precision@k** (`hit`/`total_rec`) and **recall@k** (`hit`/`total_relevant`)  
+* reduced the memory space that cosine similarity took, by chunking the ~80000 user profiles. Otherwise, it crashes due to insufficient memory
+* added `recommend_new_user` function inside class for plotting recommended games for a single profile
+
+<u>**Things to note**</u>
+
+* currently, if new user only has rated one game with 5 stars, then 1st recommendation will be the similar game as similarity is 1
+* consider normalizing `game_features` and `user profile` by row
+* non-weighted is not doing very well for people with many reviews. maybe weighted as well. Try below:
+* recommend N games for each game the person likes in evaluate function (alternative method and compare with original method)
+
+
 
 
 
@@ -131,6 +156,12 @@
   - [ ] find a way to incorporate game name and developer name similarity into cosine similarity 
   - [ ] tweak other feature weightings to get best similarities
   - [ ] reduce time complexity of evaluate function
+  - [ ] non-weighted is not doing very well for people with many reviews. maybe weighted as well. Try below:
+  - [ ] recommend N games for each game the person likes in evaluate function (alternative method and compare with original method)
+  - [ ] try a range of values of parameters (`sim_thres`, `num_recs`) to get the best performance  
+  - [ ] put label encoder in class
+  - [ ] deal with `SettingWithCopyWarning`
+  - [x] reduce space complexity of cosine similarity function
   - [x] create user profile based on the average of the features of games they reviewed
   - [x] train-test split user profile for content-based filtering model evaluation
 * Collaborative filtering
