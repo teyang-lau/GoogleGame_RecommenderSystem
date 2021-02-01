@@ -7,7 +7,7 @@
 [![GitHub license](https://img.shields.io/github/license/teyang-lau/Dog_Breeds_Classification_CNN.svg)](https://github.com/teyang-lau/Melanoma_Detection/blob/master/LICENSE)
 
 Author: TeYang, Lau <br>
-Last Updated: 30 January 2021
+Last Updated: 2 February 2021
 
 <p align="center">
 <img src = './Pictures/googlegames1.png'>
@@ -29,7 +29,7 @@ Recommending products or services to people is easy, and it has been around sinc
 
 Building a personalized recommendation system thus requires lots of data, which unfortunately, due to privacy, confidentiality and competitive reasons, are not shared publicly by companies. Therefore, the motivation of this project find a product or service whereby data regarding users can be obtained and where not many people have done a project (movies, books) before. Google play games provide an excellent opportunity to do so, as APIs are available for accessing the review data, and it also offers products that many people are familiar with.
 
-
+<br><br>
 
 ## **Project Goals** 
 
@@ -47,29 +47,72 @@ Building a personalized recommendation system thus requires lots of data, which 
 
 7. *Deploy* the model onto a **web app**, for users to obtain game recommendations 
 
-   
+   <br><br>
 
 ## **About this Dataset** 
 
 There are thousand of games on the Google Play Store. Using the Node.js [`google-play-scraper`](https://github.com/facundoolano/google-play-scraper) package, 200 games' `app IDs` from each category and collection in the store were obtained. Detailed game information and game reviews were scraped using Python [`google-play-scraper`](https://github.com/JoMingyu/google-play-scraper) package. A maximum of 2000 reviews were collected from each game, and stored in JSON format. Detailed game information contains game features like the long game description, its summary, price, released year, genre, content rating, url etc. while each review contains the username, review text, and review score on a scale of 1-5. In total, there were **~7600 games** and **~8 million game reviews** before cleaning and filtering.
 
-
+<br><br>
 
 ## Exploratory Data Analysis
+
+<img src='./Pictures/longtail1.png' width=400><img src='./Pictures/longtail2.png' width=400><img src='./Pictures/gamegenre.png' width=400>
+
+<br><br>
 
 
 
 ## Game Description Text Cleaning
 
+<img src='./Pictures/bigrams.png' width='400'>
 
+<br><br>
 
 ## Content-Based Filtering
 
 ### TF-IDF for Feature Engineering
 
+<img src='./Pictures/tfidf_wc.png' width=400>
 
+<br><br>
 
 ### LDA for Topic Modelling
+
+<img src='./Pictures/coherenceLDA.png' width=400>
+
+<br><br>
+
+### Cosine Similarity for Similar Games
+
+Recommending similar games for **Coin Master**:
+
+<img src='./Pictures/coinmaster_tfidf.png'>
+
+<img src='./Pictures/coinmaster_lda.png'>
+
+
+
+Recommending similar games for **Candy Crush**:
+
+<img src='./Pictures/candycrush_tfidf.png'>
+
+<img src='./Pictures/candycrush_lda.png'>
+
+<br><br>
+
+### Evaluation
+
+<img src='./Pictures/CB_precision_recall.png'>
+
+|              Model | Precision | Recall |
+| -----------------: | --------: | -----: |
+|     Weighted TFIDF |         0 |    5.0 |
+| Non-weighted TFIDF |         1 |    3.0 |
+|       Weighted LDA |         3 |    1.0 |
+|   Non-weighted LDA |           |        |
+
+
 
 
 
