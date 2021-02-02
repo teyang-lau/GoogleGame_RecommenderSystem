@@ -39,7 +39,7 @@ Building a personalized recommendation system thus requires lots of data, which 
 
 3. *Preprocess/Clean* game **description** to **generate/engineer** more features about the games
 
-4. Use **TF-IDF** to extract most important words and **Latent Dirichlet Allocation (LDA)** for topic modelling 
+4. Use **TF-IDF** to extract most important words and **Latent Dirichlet Allocation (LDA)** for topic modelling, and use them as game features 
 
 5. *Employ* **content-based** and **collaborative filtering** techniques to recommend games to each user based on their game ratings
 
@@ -57,6 +57,8 @@ There are thousand of games on the Google Play Store. Using the Node.js [`google
 
 ## Exploratory Data Analysis
 
+After filtering out users with < 5 reviews, the long tail plot shows that the majority of the users only voted for a few games, which means the user ratings matrix will be very sparse. For the distribution of reviews per game, the maximum is 2k reviews, which was selected during scraping. There are some games with very few reviews as well.
+
 <img src='./Pictures/longtail1.png' width=400><img src='./Pictures/longtail2.png' width=400><img src='./Pictures/gamegenre.png' width=400>
 
 <br><br>
@@ -65,7 +67,9 @@ There are thousand of games on the Google Play Store. Using the Node.js [`google
 
 ## Game Description Text Cleaning
 
-<img src='./Pictures/bigrams.png' width='400'>
+The game descriptions contains many unwanted words and sections such as headers, arrows, urls, stopwords etc., and these were removed. Using bag of words, we can look at some of the most common words and bigrams to get a better idea of the game descriptions. 
+
+<img src='./Pictures/words.png' width='400'><img src='./Pictures/bigrams.png' width='400'>
 
 <br><br>
 
@@ -73,17 +77,25 @@ There are thousand of games on the Google Play Store. Using the Node.js [`google
 
 ### TF-IDF for Feature Engineering
 
+Using Term Frequency - Inverse Document Frequency (TF-IDF), the most important words from the game descriptions were extracted out and used as game features. The word cloud shows the words with the highest weightings in the game descriptions. For each game, they will have features/columns corresponding to these words. If the word is important to the game description, it will receive a higher rating.
+
 <img src='./Pictures/tfidf_wc.png' width=400>
 
 <br><br>
 
 ### LDA for Topic Modelling
 
-<img src='./Pictures/coherenceLDA.png' width=400>
+An alternative to TF-IDF is Latent Dirichlet Allocation (LDA), which is a topic model used to classify texts in documents to a user pre-specified number of topics. Each topic is a collection of dominant keywords that are representative of the topic. To get an idea of the best number of topics (N), the coherence value is calculated on a range of N values. The topics are then used as game features, with each game having a weighting/value of how much the topic is present in its description.
+
+<img src='./Pictures/coherence_topics.png' width=800>
 
 <br><br>
 
 ### Cosine Similarity for Similar Games
+
+Cosine similarity was used to compute games that are similar to each other by comparing every pairwise game vectors (TF-IDF and LDA game vectors separately). The 5 games with the highest similarity to the inputted game is shown below.
+
+
 
 Recommending similar games for **Coin Master**:
 
@@ -103,16 +115,23 @@ Recommending similar games for **Candy Crush**:
 
 ### Evaluation
 
+For evaluating the content-based model, the user reviews were split into a train, validation and test set (40,20,40, so that for users with only 5 ratings, 2 will be used to train and evaluate on 1 rating, and finally predicted and compared to 2 test ratings). 
+
+2 methods of recommendations were implemented for each of TF-IDF and LDA game features.
+
+1. **Non-weighted**: User profiles were created by getting the mean of the vectors of games that were rated (train set). This `user profile` was then compared to all the game vectors to find the top ***100 most similar games*** using **cosine similarity**. For each of the game rated in the validation set that received a rating of >=3 (relevant games), a **hit** is given if it is inside the 100 recommendations. **Precision@K** and **Recall@K** metrics were then computed
+2. **Weighted**: User profiles were created by computing the weighted average of the games they rated based on the ratings. A game with a rating of 2 will get a smaller weighting compared to a game with a rating of 5. The following steps are the same as the non-weighted method
+
 <img src='./Pictures/CB_precision_recall.png'>
 
-|              Model | Precision | Recall |
-| -----------------: | --------: | -----: |
-|     Weighted TFIDF |         0 |    5.0 |
-| Non-weighted TFIDF |         1 |    3.0 |
-|       Weighted LDA |         3 |    1.0 |
-|   Non-weighted LDA |           |        |
+|              Model |  Precision |   Recall |
+| -----------------: | ---------: | -------: |
+|     Weighted TFIDF | **0.0034** |     0.09 |
+| Non-weighted TFIDF |     0.0019 | **0.16** |
+|       Weighted LDA |     0.0020 | **0.16** |
+|   Non-weighted LDA |     0.0019 | **0.16** |
 
-
+The final evaluation on the test set using `Non-weighted LDA` yields a ***precision*** of **0.006** and a ***recall*** of **0.12**.
 
 
 
