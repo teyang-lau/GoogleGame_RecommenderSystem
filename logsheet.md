@@ -120,7 +120,7 @@
 
   
 
-### 29-30 Jan 2021  
+### 29-31 Jan 2021  
 
 * split into train, val and test for each user, get `userprofile` with train and evaluate on validation
 * 2 methods, a nonweighted and weighted to adjust the influence of `ratings` on `userprofile`
@@ -140,6 +140,12 @@
 * recommend N games for each game the person likes in evaluate function (alternative method and compare with original method)
 
 
+
+### 2 Feb 2021
+
+* removed gensim pyLDAvis as it causes Kaggle notebook output's width to be cut off
+
+  
 
 
 
@@ -161,10 +167,12 @@
   - [ ] try a range of values of parameters (`sim_thres`, `num_recs`) to get the best performance  
   - [ ] put label encoder in class
   - [ ] deal with `SettingWithCopyWarning`
+  - [ ] legend for precision recall plot
   - [x] reduce space complexity of cosine similarity function
   - [x] create user profile based on the average of the features of games they reviewed
   - [x] train-test split user profile for content-based filtering model evaluation
 * Collaborative filtering
   * [x] reset userID after filtering; if not userID can be quite long
+  * [ ] calculate sparsity
 * Deploy model on Streamlit
   - [ ] For children recommendations
