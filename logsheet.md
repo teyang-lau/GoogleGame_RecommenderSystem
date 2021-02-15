@@ -147,6 +147,19 @@
 
   
 
+### 15 Feb 2021
+
+* re-scraped reviews to get max 10,000 reviews per game
+* clean the reviews to include users with at least 5 reviews
+* saved in parquet format for smaller file size and faster loading
+* saved one with text reviews **`reviews_parquet.gzip`**, and one without text reviews **`reviews_minimum.parquet.gzip`** and **`reviews_minimum.csv`**
+* because using the original reviews set caused matrix factorization techniques to give 5 points to many of the games with high number attacker reviews, these attacked games are very commonly recommended
+* one way is to remove the games that are highly attacked by using SD and Count of the scores. Very low SD with high count indicate potential attack and these games were removed. This is NOT the best or a good method, but since there's no way to get a complete user profile due to the nature of the scaping, this is one of the fastest way for now.  Alternatives include: using clustering to find outlier clusters, which needs significant computation resources
+* This seems to prevent spurious majority 5 score recommendations of attacked games
+* Tried out GridSearchCV for SVD to tune hyperparameters. Can only try out 2 values of 2 hyperparameters at once due to run time on Kaggle
+
+
+
 
 
 ## TO DO
